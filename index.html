@@ -324,7 +324,7 @@
     border-radius: 10px;
     padding: 14px 20px;
     display: grid;
-    grid-template-columns: 150px 1fr 130px 130px 130px 110px;
+    grid-template-columns: 140px 1fr 110px 110px 130px 120px;
     align-items: center;
     gap: 16px;
     box-shadow: var(--shadow);
@@ -432,7 +432,7 @@
   /* responsive */
   @media (max-width: 1100px) {
     .kpi-row { grid-template-columns: repeat(2,1fr); }
-    .loja-row { grid-template-columns: 130px 1fr 110px 110px; }
+    .loja-row { grid-template-columns: 120px 1fr 100px 100px; }
     .loja-row > *:nth-child(5), .loja-row > *:nth-child(6) { display: none; }
     .two-col { grid-template-columns: 1fr; }
     .proj-card { grid-template-columns: 1fr; }
@@ -545,10 +545,11 @@ const COL_DIA1         = 3; // coluna C = índice 3 (1-based)
 // AH=34 ACUM_MES | AI=35 ACUM_ANO | AK=37 META_MES | AL=38 %META | AO=41 MES_ANT | AP=42 %MES_ANT | AQ=43 ANO_ANT | AR=44 %ANO_ANT
 // Semanas: AT=46 S1 | AU=47 S2 | AV=48 S3 | AW=49 S4 | AX=50 S5
 const COL = {
-  ACUM_MES:  34, ACUM_ANO: 35,
-  META_MES:  37, PCT_META: 38,
-  MES_ANT:   41, PCT_MES_ANT: 42,
-  ANO_ANT:   43, PCT_ANO_ANT: 44,
+  ACUM_MES:     34, ACUM_ANO:    35,
+  META_MES:     37, PCT_META:    38,
+  META_ACUM_ANO:39, PCT_META_ANO:40,  // AM=39 meta acum ano | AN=40 % meta acum ano
+  MES_ANT:      41, PCT_MES_ANT: 42,
+  ANO_ANT:      43, PCT_ANO_ANT: 44,
   SEM1: 46, SEM2: 47, SEM3: 48, SEM4: 49, SEM5: 50,
 };
 
@@ -669,17 +670,24 @@ function getLojaData(mesIdx, lojaIdx) {
 function getTotalData(mesIdx) {
   const off = rowOffset(mesIdx);
   const rR  = ROW_BASE_RECEITA + off + 10; // linha TOTAL = loja 10
+  const rTM = ROW_BASE_TM      + off + 10;
   const rPA = ROW_BASE_PA      + off + 10;
+  const receita_ano  = num(rR,  COL.ACUM_ANO);
+  const meta_acum_ano = num(rR, COL.META_ACUM_ANO);
+  const pct_meta_ano = meta_acum_ano > 0 ? (receita_ano / meta_acum_ano) * 100 : num(rR, COL.PCT_META_ANO);
   return {
-    receita_acum: num(rR, COL.ACUM_MES),
-    meta_mes:     num(rR, COL.META_MES),
-    pct_meta:     num(rR, COL.PCT_META),
-    mes_ant:      num(rR, COL.MES_ANT),
-    pct_mes_ant:  num(rR, COL.PCT_MES_ANT),
-    ano_ant:      num(rR, COL.ANO_ANT),
-    pct_ano_ant:  num(rR, COL.PCT_ANO_ANT),
-    receita_ano:  num(rR, COL.ACUM_ANO),
-    pa_acum:      num(rPA, COL.ACUM_MES),
+    receita_acum:    num(rR,  COL.ACUM_MES),
+    meta_mes:        num(rR,  COL.META_MES),
+    pct_meta:        num(rR,  COL.PCT_META),
+    mes_ant:         num(rR,  COL.MES_ANT),
+    pct_mes_ant:     num(rR,  COL.PCT_MES_ANT),
+    ano_ant:         num(rR,  COL.ANO_ANT),
+    pct_ano_ant:     num(rR,  COL.PCT_ANO_ANT),
+    receita_ano,
+    meta_acum_ano,
+    pct_meta_ano,
+    pa_acum:         num(rPA, COL.ACUM_MES),
+    tm_total:        num(rTM, COL.ACUM_MES), // TM da linha TOTAL da planilha (receita/atend)
     sem1: num(rR,COL.SEM1), sem2: num(rR,COL.SEM2),
     sem3: num(rR,COL.SEM3), sem4: num(rR,COL.SEM4),
     sem5: num(rR,COL.SEM5),
@@ -721,6 +729,21 @@ function barColor(pct) {
 // ══════════════════════════════════════════════════════════════
 // RENDER
 // ══════════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════
+// ORDENAÇÃO DO RANKING
+// ══════════════════════════════════════════════════════════════
+let SORT_KEY = 'pct_meta'; // padrão: % meta
+
+function setSortKey(key) {
+  SORT_KEY = key;
+  renderDashboard();
+}
+
+// Adiciona proj_loja em cada loja para suportar ordenação
+function calcProjLoja(l, diasCorridos, diasMes) {
+  return diasCorridos > 0 ? (l.receita_acum / diasCorridos) * diasMes : 0;
+}
+
 function renderMesBar() {
   const bar = document.getElementById("mes-bar");
   bar.innerHTML = MESES.map((m, i) =>
@@ -736,7 +759,11 @@ function trocarMes(idx) {
 
 function renderDashboard() {
   const total = getTotalData(MES_ATIVO);
-  const lojas = LOJAS.map((l,i) => ({ ...l, ...getLojaData(MES_ATIVO, i) }));
+  const lojas = LOJAS.map((l,i) => {
+    const d = getLojaData(MES_ATIVO, i);
+    const proj_loja = diasCorridos > 0 ? (d.receita_acum / diasCorridos) * diasMes : 0;
+    return { ...l, ...d, proj_loja };
+  });
   const mesNome = MESES[MES_ATIVO].toUpperCase() + "/26";
 
   document.getElementById("header-mes").textContent = mesNome;
@@ -752,8 +779,8 @@ function renderDashboard() {
     : 0;
   const projPct = total.meta_mes > 0 ? (proj / total.meta_mes) * 100 : 0;
 
-  // TM médio e PA total
-  const tmMedio = lojas.reduce((s,l) => s + (l.tm_acum||0), 0) / lojas.filter(l=>l.tm_acum>0).length;
+  // AJUSTE 1: TM geral = linha TOTAL da planilha (receita total ÷ atendimentos total)
+  const tmGeral = total.tm_total || 0;
   const paTotal = total.pa_acum;
 
   const main = document.getElementById("main-content");
@@ -777,8 +804,8 @@ function renderDashboard() {
       </div>
       <div class="kpi-card" style="--top-color:var(--ok)">
         <div class="kpi-label">Ticket Médio Líquido</div>
-        <div class="kpi-value">${isNaN(tmMedio) ? '—' : 'R$ ' + tmMedio.toFixed(2).replace('.',',')}</div>
-        <div class="kpi-sub">média das lojas no mês</div>
+        <div class="kpi-value">${tmGeral > 0 ? 'R$ ' + tmGeral.toFixed(2).replace('.',',') : '—'}</div>
+        <div class="kpi-sub">receita ÷ atendimentos (rede)</div>
       </div>
       <div class="kpi-card" style="--top-color:var(--warn)">
         <div class="kpi-label">Pessoas Atendidas</div>
@@ -795,9 +822,12 @@ function renderDashboard() {
         <div class="proj-sub">${((diasCorridos/diasMes)*100).toFixed(0)}% do mês</div>
       </div>
       <div class="proj-item">
-        <div class="proj-label">Receita acumulada ano</div>
+        <div class="proj-label">Receita Acumulada Ano</div>
         <div class="proj-val" style="font-size:20px">${fBRL(total.receita_ano)}</div>
-        <div class="proj-sub">vs ano ant. <span style="color:${total.pct_ano_ant>=100?'var(--ok)':'var(--danger)'}">${fPct(total.pct_ano_ant)}</span></div>
+        <div class="proj-sub">
+          <span class="kpi-badge ${badgeClass(total.pct_meta_ano)}">${fPct(total.pct_meta_ano)} da meta ano</span>
+          &nbsp;·&nbsp; vs ano ant. <span style="color:${total.pct_ano_ant>=100?'var(--ok)':'var(--danger)'}">${fPct(total.pct_ano_ant)}</span>
+        </div>
       </div>
       <div class="proj-item">
         <div class="proj-label">vs Mês anterior</div>
@@ -807,64 +837,103 @@ function renderDashboard() {
     </div>
 
     <!-- Ranking lojas -->
-    <div class="section-title">ranking de lojas — receita vs meta</div>
-    <div class="lojas-grid">
-      ${lojas
-        .sort((a,b) => (b.pct_meta||0) - (a.pct_meta||0))
-        .map((l, pos) => {
+    <div class="section-title" style="justify-content:space-between;align-items:center">
+      <span>ranking de lojas — receita vs meta</span>
+      <div style="display:flex;gap:6px;flex-shrink:0">
+        ${['pct_meta','receita_acum','proj_loja','tm_acum','tm_meta','pa_acum'].map(k => {
+          const labels = {pct_meta:'% Meta',receita_acum:'Realizado',proj_loja:'Projeção',tm_acum:'TM',tm_meta:'Meta TM',pa_acum:'Atend.'};
+          return `<button onclick="setSortKey('${k}')" id="sort_${k}"
+            style="font-family:var(--font-body);font-size:10px;font-weight:700;padding:3px 10px;
+                   border-radius:20px;border:1px solid var(--cinza-bord);cursor:pointer;
+                   background:${SORT_KEY==='${k}'?'var(--azul)':'var(--cinza-bg)'};
+                   color:${SORT_KEY==='${k}'?'#fff':'var(--cinza-txt)'};letter-spacing:0.04em">
+            ${labels[k]}</button>`;
+        }).join("")}
+      </div>
+    </div>
+    <div class="lojas-grid" id="lojas-grid-render">
+      ${(() => {
+        const sorted = [...lojas].sort((a,b) => {
+          const ak = a[SORT_KEY] || 0;
+          const bk = b[SORT_KEY] || 0;
+          return bk - ak;
+        });
+        return sorted.map(l => {
           const pct = l.pct_meta || 0;
           const statusClass = pct >= 100 ? 'acima' : pct >= 85 ? 'quase' : 'abaixo';
           const color = barColor(pct);
           const barW = Math.min(pct, 130);
-          return `
-          <div class="loja-row ${statusClass}">
+          // projeção por loja
+          const projLoja = diasCorridos > 0 ? (l.receita_acum / diasCorridos) * diasMes : 0;
+          const projPctLoja = l.meta_mes > 0 ? (projLoja / l.meta_mes) * 100 : 0;
+          const projColor = barColor(projPctLoja);
+          // TM % meta
+          const tmPct = l.tm_meta > 0 ? (l.tm_acum / l.tm_meta) * 100 : 0;
+          const tmColor = barColor(tmPct);
+          return \`
+          <div class="loja-row \${statusClass}">
             <div>
-              <div class="loja-name">${l.nome}</div>
-              <div class="loja-name-sub">${l.label}</div>
+              <div class="loja-name">\${l.nome}</div>
+              <div class="loja-name-sub">\${l.label}</div>
             </div>
             <div class="progress-wrap">
               <div class="progress-bar-bg">
-                <div class="progress-bar-fill" style="width:${barW}%;background:${color}"></div>
+                <div class="progress-bar-fill" style="width:\${barW}%;background:\${color}"></div>
               </div>
-              <div class="progress-pct" style="color:${color}">${fPct(pct)}</div>
+              <div class="progress-pct" style="color:\${color}">\${fPct(pct)} da meta</div>
             </div>
             <div class="loja-metric">
-              <div class="loja-metric-val">${fBRL(l.receita_acum)}</div>
+              <div class="loja-metric-val">\${fBRL(l.receita_acum)}</div>
               <div class="loja-metric-label">realizado</div>
             </div>
             <div class="loja-metric">
-              <div class="loja-metric-val">${fBRL(l.meta_mes)}</div>
-              <div class="loja-metric-label">meta mês</div>
+              <div class="loja-metric-val" style="color:\${projColor}">\${fBRL(projLoja)}</div>
+              <div class="loja-metric-label">projeção <span style="color:\${projColor};font-weight:700">\${fPct(projPctLoja)}</span></div>
             </div>
             <div class="loja-metric">
-              <div class="loja-metric-val" style="color:var(--azul)">${'R$ ' + (l.tm_acum||0).toFixed(2).replace('.',',')}</div>
-              <div class="loja-metric-label">ticket médio</div>
+              <div class="loja-metric-val" style="color:\${tmColor}">R$ \${(l.tm_acum||0).toFixed(2).replace('.',',')}</div>
+              <div class="loja-metric-label">TM · meta R$ \${(l.tm_meta||0).toFixed(2).replace('.',',')} <span style="color:\${tmColor};font-weight:700">\${tmPct>0?fPct(tmPct):''}</span></div>
             </div>
             <div class="loja-metric">
-              <div class="loja-metric-val">${fNum(l.pa_acum)}</div>
+              <div class="loja-metric-val">\${fNum(l.pa_acum)}</div>
               <div class="loja-metric-label">atendimentos</div>
             </div>
-          </div>`;
-        }).join("")}
+          </div>\`;
+        }).join("");
+      })()}
     </div>
 
     <!-- Charts -->
     <div class="two-col">
       <!-- Ticket médio por loja -->
       <div class="chart-card">
-        <div class="chart-title">Ticket Médio por Loja <span>R$ acumulado no mês</span></div>
-        <div class="bar-chart">
+        <div class="chart-title">Ticket Médio por Loja <span>realizado vs meta do mês</span></div>
+        <div style="display:flex;flex-direction:column;gap:12px">
           ${lojas
             .filter(l => l.tm_acum > 0)
             .sort((a,b) => (b.tm_acum||0)-(a.tm_acum||0))
             .map(l => {
               const maxTM = Math.max(...lojas.map(x=>x.tm_acum||0));
               const w = maxTM > 0 ? ((l.tm_acum/maxTM)*100).toFixed(1) : 0;
+              const tmPct = l.tm_meta > 0 ? (l.tm_acum / l.tm_meta) * 100 : 0;
+              const tmColor = barColor(tmPct);
               return `
-              <div class="bar-item">
-                <div class="bar-loja">${l.nome}</div>
-                <div class="bar-track"><div class="bar-fill" style="width:${w}%;background:var(--azul)"></div></div>
-                <div class="bar-val">R$ ${(l.tm_acum||0).toFixed(2).replace('.',',')}</div>
+              <div>
+                <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
+                  <div class="bar-loja">${l.nome}</div>
+                  <div style="flex:1;height:8px;background:var(--cinza-bg);border-radius:4px;overflow:hidden">
+                    <div style="width:${w}%;height:100%;border-radius:4px;background:var(--azul);transition:width 0.6s"></div>
+                  </div>
+                  <div style="font-family:var(--font-body);font-size:12px;font-weight:700;color:var(--texto);min-width:60px;text-align:right">
+                    R$ ${(l.tm_acum||0).toFixed(2).replace('.',',')}
+                  </div>
+                </div>
+                <div style="display:flex;align-items:center;gap:10px;padding-left:66px">
+                  <div style="font-family:var(--font-body);font-size:10px;color:var(--cinza-txt)">
+                    Meta: R$ ${(l.tm_meta||0).toFixed(2).replace('.',',')}
+                  </div>
+                  <span class="kpi-badge ${badgeClass(tmPct)}" style="font-size:10px;padding:1px 6px">${tmPct>0?fPct(tmPct):'s/ meta'}</span>
+                </div>
               </div>`;
             }).join("")}
         </div>
