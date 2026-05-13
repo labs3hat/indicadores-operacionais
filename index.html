@@ -4,460 +4,162 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Grupo 3HAT · Chiquinho · Indicadores</title>
-
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Nunito+Sans:wght@400;600;700&display=swap');
+:root {
+  --vermelho:#E8192C; --vermelho2:#c01020;
+  --azul:#003DA5;     --azul2:#002d7a;
+  --branco:#ffffff;   --cinza-bg:#f5f5f7;
+  --cinza-bord:#e8e8ec; --cinza-txt:#6b6b80;
+  --texto:#111118;
+  --ok:#00a651; --warn:#f59e0b; --danger:#E8192C;
+  --font-head:'Nunito',sans-serif;
+  --font-body:'Nunito Sans',sans-serif;
+  --radius:12px;
+  --shadow:0 2px 12px rgba(0,0,0,0.07);
+  --shadow-md:0 4px 24px rgba(0,0,0,0.10);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--cinza-bg);color:var(--texto);font-family:var(--font-body);min-height:100vh;overflow-x:hidden}
 
-  :root {
-    --vermelho:   #E8192C;
-    --vermelho2:  #c01020;
-    --azul:       #003DA5;
-    --azul2:      #002d7a;
-    --branco:     #ffffff;
-    --cinza-bg:   #f5f5f7;
-    --cinza-card: #ffffff;
-    --cinza-bord: #e8e8ec;
-    --cinza-txt:  #6b6b80;
-    --texto:      #111118;
-    --ok:         #00a651;
-    --warn:       #f59e0b;
-    --danger:     #E8192C;
-    --font-head:  'Nunito', sans-serif;
-    --font-body:  'Nunito Sans', sans-serif;
-    --radius:     12px;
-    --shadow:     0 2px 12px rgba(0,0,0,0.07);
-    --shadow-md:  0 4px 24px rgba(0,0,0,0.10);
-  }
+/* LOGIN */
+#login-screen{position:fixed;inset:0;background:var(--azul);display:flex;align-items:center;justify-content:center;z-index:100;flex-direction:column}
+#login-screen.hidden{display:none}
+#login-screen::before{content:'';position:fixed;top:-120px;right:-120px;width:360px;height:360px;border-radius:50%;background:rgba(232,25,44,0.25);pointer-events:none}
+#login-screen::after{content:'';position:fixed;bottom:-80px;left:-80px;width:240px;height:240px;border-radius:50%;background:rgba(255,255,255,0.06);pointer-events:none}
+.login-box{width:380px;border-radius:20px;padding:48px 44px;background:var(--branco);box-shadow:var(--shadow-md);position:relative;z-index:1}
+.login-logo-wrap{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+.login-logo-circle{width:52px;height:52px;border-radius:12px;background:#1a1a2e;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,0.2)}
+.login-logo-circle svg{width:36px;height:36px}
+.login-logo-text{font-family:var(--font-head);font-size:19px;font-weight:900;color:var(--azul);letter-spacing:-0.3px;line-height:1}
+.login-logo-text span{color:var(--vermelho)}
+.login-sub{font-size:12px;color:var(--cinza-txt);font-family:var(--font-body);margin-bottom:32px;letter-spacing:0.03em}
+.login-label{font-size:12px;font-family:var(--font-body);font-weight:700;color:var(--texto);margin-bottom:8px}
+.login-input{width:100%;background:var(--cinza-bg);border:1.5px solid var(--cinza-bord);border-radius:10px;padding:13px 16px;color:var(--texto);font-family:var(--font-body);font-size:15px;outline:none;transition:border-color 0.2s;margin-bottom:16px}
+.login-input:focus{border-color:var(--azul)}
+.login-btn{width:100%;background:var(--vermelho);color:#fff;border:none;border-radius:10px;padding:14px;font-family:var(--font-head);font-size:15px;font-weight:800;letter-spacing:0.03em;cursor:pointer;transition:background 0.15s,transform 0.1s}
+.login-btn:hover{background:var(--vermelho2)}
+.login-btn:active{transform:scale(0.98)}
+.login-error{margin-top:12px;font-size:12px;font-family:var(--font-body);color:var(--danger);text-align:center;min-height:18px;font-weight:600}
 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+/* DASHBOARD */
+#dashboard{display:none;min-height:100vh}
+#dashboard.visible{display:block}
+.header{background:var(--azul);display:flex;align-items:center;justify-content:space-between;padding:0 40px;height:64px;position:sticky;top:0;z-index:10;box-shadow:0 2px 12px rgba(0,61,165,0.18)}
+.header-left{display:flex;align-items:center;gap:16px}
+.logo-wrap{display:flex;align-items:center;gap:10px}
+.logo-circle{width:36px;height:36px;border-radius:8px;background:#1a1a2e;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.logo-circle svg{width:24px;height:24px}
+.logo-text{font-family:var(--font-head);font-size:15px;font-weight:900;color:#fff;letter-spacing:-0.2px;white-space:nowrap}
+.logo-text span{color:#ffd0d4}
+.header-divider{width:1px;height:24px;background:rgba(255,255,255,0.2)}
+.header-tag{font-family:var(--font-body);font-size:12px;color:rgba(255,255,255,0.7);font-weight:600}
+.header-right{display:flex;align-items:center;gap:16px}
+.update-info{font-family:var(--font-body);font-size:12px;color:rgba(255,255,255,0.65);display:flex;align-items:center;gap:6px}
+.dot-live{width:6px;height:6px;border-radius:50%;background:#4dff9e;display:inline-block;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+.logout-btn{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.8);border-radius:6px;padding:6px 14px;font-family:var(--font-body);font-size:12px;font-weight:600;cursor:pointer;transition:background 0.15s}
+.logout-btn:hover{background:rgba(255,255,255,0.2)}
 
-  body {
-    background: var(--cinza-bg);
-    color: var(--texto);
-    font-family: var(--font-body);
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
+.mes-bar{background:var(--branco);padding:0 40px;display:flex;gap:2px;align-items:center;border-bottom:1px solid var(--cinza-bord);overflow-x:auto}
+.mes-btn{background:none;border:none;border-bottom:3px solid transparent;color:var(--cinza-txt);padding:14px 16px;font-family:var(--font-body);font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;transition:color 0.15s,border-color 0.15s}
+.mes-btn:hover{color:var(--azul)}
+.mes-btn.active{color:var(--azul);border-bottom-color:var(--vermelho)}
 
-  /* ── LOGIN ── */
-  #login-screen {
-    position: fixed; inset: 0;
-    background: var(--azul);
-    display: flex; align-items: center; justify-content: center;
-    z-index: 100;
-    flex-direction: column;
-  }
-  #login-screen.hidden { display: none; }
+.main{padding:28px 40px;max-width:1400px;margin:0 auto}
 
-  /* bolinha decorativa */
-  #login-screen::before {
-    content: '';
-    position: fixed;
-    top: -120px; right: -120px;
-    width: 360px; height: 360px;
-    border-radius: 50%;
-    background: rgba(232,25,44,0.25);
-    pointer-events: none;
-  }
-  #login-screen::after {
-    content: '';
-    position: fixed;
-    bottom: -80px; left: -80px;
-    width: 240px; height: 240px;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.06);
-    pointer-events: none;
-  }
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+.kpi-card{background:var(--branco);border:1px solid var(--cinza-bord);border-radius:var(--radius);padding:20px 24px;box-shadow:var(--shadow);border-top:3px solid var(--top-color,var(--cinza-bord));transition:box-shadow 0.2s}
+.kpi-card:hover{box-shadow:var(--shadow-md)}
+.kpi-label{font-family:var(--font-body);font-size:11px;font-weight:700;color:var(--cinza-txt);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:10px}
+.kpi-value{font-family:var(--font-head);font-size:26px;font-weight:900;line-height:1;margin-bottom:8px;letter-spacing:-0.5px;color:var(--texto)}
+.kpi-sub{font-family:var(--font-body);font-size:12px;color:var(--cinza-txt);display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.kpi-badge{display:inline-flex;align-items:center;font-family:var(--font-body);font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px}
+.badge-ok{background:#e6f9f1;color:var(--ok)}
+.badge-warn{background:#fef3c7;color:#b45309}
+.badge-bad{background:#fee2e2;color:var(--danger)}
 
-  .login-box {
-    width: 380px;
-    border-radius: 20px;
-    padding: 48px 44px;
-    background: var(--branco);
-    box-shadow: var(--shadow-md);
-    position: relative;
-    z-index: 1;
-  }
-  .login-logo-wrap {
-    display: flex; align-items: center; gap: 12px;
-    margin-bottom: 8px;
-  }
-  .login-logo-circle {
-    width: 52px; height: 52px;
-    border-radius: 12px;
-    background: #1a1a2e;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-  }
-  .login-logo-circle svg { width: 36px; height: 36px; }
-  .login-logo-text {
-    font-family: var(--font-head);
-    font-size: 19px; font-weight: 900;
-    color: var(--azul);
-    letter-spacing: -0.3px;
-    line-height: 1;
-  }
-  .login-logo-text span { color: var(--vermelho); }
-  .login-sub {
-    font-size: 12px;
-    color: var(--cinza-txt);
-    font-family: var(--font-body);
-    margin-bottom: 32px;
-    letter-spacing: 0.03em;
-  }
-  .login-label {
-    font-size: 12px;
-    font-family: var(--font-body);
-    font-weight: 700;
-    color: var(--texto);
-    margin-bottom: 8px;
-  }
-  .login-input {
-    width: 100%;
-    background: var(--cinza-bg);
-    border: 1.5px solid var(--cinza-bord);
-    border-radius: 10px;
-    padding: 13px 16px;
-    color: var(--texto);
-    font-family: var(--font-body);
-    font-size: 15px;
-    outline: none;
-    transition: border-color 0.2s;
-    margin-bottom: 16px;
-  }
-  .login-input:focus { border-color: var(--azul); }
-  .login-btn {
-    width: 100%;
-    background: var(--vermelho);
-    color: #fff;
-    border: none;
-    border-radius: 10px;
-    padding: 14px;
-    font-family: var(--font-head);
-    font-size: 15px;
-    font-weight: 800;
-    letter-spacing: 0.03em;
-    cursor: pointer;
-    transition: background 0.15s, transform 0.1s;
-  }
-  .login-btn:hover  { background: var(--vermelho2); }
-  .login-btn:active { transform: scale(0.98); }
-  .login-error {
-    margin-top: 12px;
-    font-size: 12px;
-    font-family: var(--font-body);
-    color: var(--danger);
-    text-align: center;
-    min-height: 18px;
-    font-weight: 600;
-  }
+.section-title{font-family:var(--font-body);font-size:11px;font-weight:700;color:var(--cinza-txt);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:12px;margin-top:8px;display:flex;align-items:center;gap:10px}
+.section-title-line{flex:1;height:1px;background:var(--cinza-bord)}
 
-  /* ── DASHBOARD ── */
-  #dashboard { display: none; min-height: 100vh; }
-  #dashboard.visible { display: block; }
+.lojas-grid{display:grid;gap:8px;margin-bottom:24px}
+.loja-row{background:var(--branco);border:1px solid var(--cinza-bord);border-radius:10px;padding:14px 20px;display:grid;grid-template-columns:140px 1fr 110px 120px 140px 100px;align-items:center;gap:16px;box-shadow:var(--shadow);border-left:4px solid transparent}
+.loja-row:hover{box-shadow:var(--shadow-md)}
+.loja-row.acima{border-left-color:var(--ok)}
+.loja-row.quase{border-left-color:var(--warn)}
+.loja-row.abaixo{border-left-color:var(--danger)}
+.loja-name{font-family:var(--font-head);font-size:14px;font-weight:800;color:var(--texto)}
+.loja-name-sub{font-size:11px;color:var(--cinza-txt);margin-top:2px;font-family:var(--font-body)}
+.progress-bar-bg{height:5px;background:var(--cinza-bg);border-radius:3px;overflow:hidden}
+.progress-bar-fill{height:100%;border-radius:3px;transition:width 0.6s ease}
+.progress-pct{font-family:var(--font-body);font-size:12px;margin-top:4px;font-weight:700}
+.loja-metric{text-align:right}
+.loja-metric-val{font-family:var(--font-head);font-size:13px;font-weight:700;color:var(--texto)}
+.loja-metric-label{font-size:10px;color:var(--cinza-txt);margin-top:2px;font-family:var(--font-body);font-weight:600;text-transform:uppercase;letter-spacing:0.04em}
 
-  /* header */
-  .header {
-    background: var(--azul);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 40px;
-    height: 64px;
-    position: sticky; top: 0;
-    z-index: 10;
-    box-shadow: 0 2px 12px rgba(0,61,165,0.18);
-  }
-  .header-left { display: flex; align-items: center; gap: 16px; }
+.sort-btn{font-family:var(--font-body);font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;border:1px solid var(--cinza-bord);cursor:pointer;letter-spacing:0.04em;transition:background 0.15s,color 0.15s}
+.sort-btn.active{background:var(--azul);color:#fff;border-color:var(--azul)}
+.sort-btn:not(.active){background:var(--cinza-bg);color:var(--cinza-txt)}
 
-  .logo-wrap { display: flex; align-items: center; gap: 10px; }
-  .logo-circle {
-    width: 36px; height: 36px;
-    border-radius: 8px;
-    background: #1a1a2e;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-  }
-  .logo-circle svg { width: 24px; height: 24px; }
-  .logo-text {
-    font-family: var(--font-head);
-    font-size: 15px; font-weight: 900;
-    color: #fff; letter-spacing: -0.2px;
-    white-space: nowrap;
-  }
-  .logo-text span { color: #ffd0d4; }
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px}
+.chart-card{background:var(--branco);border:1px solid var(--cinza-bord);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow)}
+.chart-title{font-family:var(--font-head);font-size:14px;font-weight:800;color:var(--texto);margin-bottom:20px;display:flex;align-items:center;justify-content:space-between}
+.chart-title span{font-family:var(--font-body);font-size:11px;color:var(--cinza-txt);font-weight:600}
+.bar-chart{display:flex;flex-direction:column;gap:10px}
+.bar-item{display:flex;align-items:center;gap:10px}
+.bar-loja{font-family:var(--font-body);font-size:11px;font-weight:700;color:var(--cinza-txt);width:56px;text-align:right;flex-shrink:0}
+.bar-track{flex:1;height:8px;background:var(--cinza-bg);border-radius:4px;overflow:hidden}
+.bar-fill{height:100%;border-radius:4px;transition:width 0.6s ease}
+.bar-val{font-family:var(--font-body);font-size:11px;font-weight:700;color:var(--texto);width:60px}
 
-  .header-divider {
-    width: 1px; height: 24px;
-    background: rgba(255,255,255,0.2);
-  }
-  .header-tag {
-    font-family: var(--font-body);
-    font-size: 12px;
-    color: rgba(255,255,255,0.7);
-    font-weight: 600;
-    letter-spacing: 0.03em;
-  }
-  .header-right { display: flex; align-items: center; gap: 16px; }
-  .update-info {
-    font-family: var(--font-body);
-    font-size: 12px;
-    color: rgba(255,255,255,0.65);
-    display: flex; align-items: center; gap: 6px;
-  }
-  .dot-live {
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: #4dff9e;
-    display: inline-block;
-    animation: pulse 2s infinite;
-  }
-  @keyframes pulse { 0%,100%{opacity:1}50%{opacity:0.3} }
-  .logout-btn {
-    background: rgba(255,255,255,0.12);
-    border: 1px solid rgba(255,255,255,0.2);
-    color: rgba(255,255,255,0.8);
-    border-radius: 6px;
-    padding: 6px 14px;
-    font-family: var(--font-body);
-    font-size: 12px; font-weight: 600;
-    cursor: pointer;
-    transition: background 0.15s;
-  }
-  .logout-btn:hover { background: rgba(255,255,255,0.2); }
+.weeks-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.week-col{text-align:center}
+.week-label{font-family:var(--font-body);font-size:10px;font-weight:700;color:var(--cinza-txt);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.05em}
+.week-bar-wrap{display:flex;align-items:flex-end;justify-content:center;height:64px}
+.week-bar{width:28px;border-radius:4px 4px 0 0;background:var(--azul);transition:height 0.5s ease;min-height:2px}
+.week-val{font-family:var(--font-body);font-size:10px;font-weight:700;color:var(--cinza-txt);margin-top:6px}
 
-  /* mes selector */
-  .mes-bar {
-    background: var(--branco);
-    padding: 0 40px;
-    display: flex; gap: 2px; align-items: center;
-    border-bottom: 1px solid var(--cinza-bord);
-    overflow-x: auto;
-  }
-  .mes-btn {
-    background: none; border: none; border-bottom: 3px solid transparent;
-    color: var(--cinza-txt);
-    padding: 14px 16px;
-    font-family: var(--font-body);
-    font-size: 13px; font-weight: 700;
-    cursor: pointer; white-space: nowrap;
-    transition: color 0.15s, border-color 0.15s;
-    letter-spacing: 0.02em;
-  }
-  .mes-btn:hover { color: var(--azul); }
-  .mes-btn.active {
-    color: var(--azul);
-    border-bottom-color: var(--vermelho);
-  }
+.proj-card{background:var(--branco);border:1px solid var(--cinza-bord);border-radius:var(--radius);padding:20px 28px;margin-bottom:24px;display:grid;grid-template-columns:repeat(3,1fr);gap:0;box-shadow:var(--shadow)}
+.proj-item{text-align:center;padding:8px 16px}
+.proj-item+.proj-item{border-left:1px solid var(--cinza-bord)}
+.proj-label{font-family:var(--font-body);font-size:10px;font-weight:700;color:var(--cinza-txt);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:8px}
+.proj-val{font-family:var(--font-head);font-size:22px;font-weight:900;color:var(--texto);letter-spacing:-0.5px}
+.proj-sub{font-family:var(--font-body);font-size:11px;color:var(--cinza-txt);margin-top:4px}
 
-  /* main */
-  .main { padding: 28px 40px; max-width: 1400px; margin: 0 auto; }
+.loading{display:flex;align-items:center;justify-content:center;height:300px;flex-direction:column;gap:16px}
+.spinner{width:32px;height:32px;border:3px solid var(--cinza-bord);border-top-color:var(--vermelho);border-radius:50%;animation:spin 0.8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-text{font-family:var(--font-body);font-size:13px;color:var(--cinza-txt);font-weight:600}
+.error-msg{background:#fee2e2;border:1px solid #fca5a5;border-radius:8px;padding:16px 20px;font-family:var(--font-body);font-size:13px;color:var(--danger);margin-bottom:20px;font-weight:600}
 
-  /* KPI row */
-  .kpi-row {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
-    margin-bottom: 24px;
-  }
-  .kpi-card {
-    background: var(--branco);
-    border: 1px solid var(--cinza-bord);
-    border-radius: var(--radius);
-    padding: 20px 24px;
-    box-shadow: var(--shadow);
-    border-top: 3px solid var(--top-color, var(--cinza-bord));
-    transition: box-shadow 0.2s;
-  }
-  .kpi-card:hover { box-shadow: var(--shadow-md); }
-  .kpi-label {
-    font-family: var(--font-body);
-    font-size: 11px; font-weight: 700;
-    color: var(--cinza-txt);
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    margin-bottom: 10px;
-  }
-  .kpi-value {
-    font-family: var(--font-head);
-    font-size: 26px; font-weight: 900;
-    line-height: 1; margin-bottom: 8px;
-    letter-spacing: -0.5px;
-    color: var(--texto);
-  }
-  .kpi-sub {
-    font-family: var(--font-body);
-    font-size: 12px; color: var(--cinza-txt);
-    display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
-  }
-  .kpi-badge {
-    display: inline-flex; align-items: center;
-    font-family: var(--font-body); font-size: 11px; font-weight: 700;
-    padding: 2px 8px; border-radius: 20px;
-  }
-  .badge-ok   { background: #e6f9f1; color: var(--ok); }
-  .badge-warn { background: #fef3c7; color: #b45309; }
-  .badge-bad  { background: #fee2e2; color: var(--danger); }
-
-  /* seção */
-  .section-title {
-    font-family: var(--font-body);
-    font-size: 11px; font-weight: 700;
-    color: var(--cinza-txt);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin-bottom: 12px;
-    margin-top: 8px;
-    display: flex; align-items: center; gap: 10px;
-  }
-  .section-title::after {
-    content: ''; flex: 1;
-    height: 1px; background: var(--cinza-bord);
-  }
-
-  /* lojas */
-  .lojas-grid { display: grid; gap: 8px; margin-bottom: 24px; }
-  .loja-row {
-    background: var(--branco);
-    border: 1px solid var(--cinza-bord);
-    border-radius: 10px;
-    padding: 14px 20px;
-    display: grid;
-    grid-template-columns: 140px 1fr 110px 110px 130px 120px;
-    align-items: center;
-    gap: 16px;
-    box-shadow: var(--shadow);
-    transition: box-shadow 0.15s, border-color 0.15s;
-    border-left: 4px solid transparent;
-  }
-  .loja-row:hover { box-shadow: var(--shadow-md); border-color: var(--cinza-bord); }
-  .loja-row.acima  { border-left-color: var(--ok); }
-  .loja-row.quase  { border-left-color: var(--warn); }
-  .loja-row.abaixo { border-left-color: var(--danger); }
-
-  .loja-name { font-family: var(--font-head); font-size: 14px; font-weight: 800; color: var(--texto); }
-  .loja-name-sub { font-size: 11px; color: var(--cinza-txt); margin-top: 2px; font-family: var(--font-body); }
-
-  .progress-bar-bg {
-    height: 5px; background: var(--cinza-bg);
-    border-radius: 3px; overflow: hidden;
-  }
-  .progress-bar-fill {
-    height: 100%; border-radius: 3px;
-    transition: width 0.6s ease;
-  }
-  .progress-pct {
-    font-family: var(--font-body); font-size: 12px;
-    margin-top: 4px; font-weight: 700;
-  }
-  .loja-metric { text-align: right; }
-  .loja-metric-val {
-    font-family: var(--font-head); font-size: 14px; font-weight: 700; color: var(--texto);
-  }
-  .loja-metric-label {
-    font-size: 10px; color: var(--cinza-txt); margin-top: 2px;
-    font-family: var(--font-body); font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em;
-  }
-
-  /* 2 col */
-  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
-
-  /* chart card */
-  .chart-card {
-    background: var(--branco);
-    border: 1px solid var(--cinza-bord);
-    border-radius: var(--radius);
-    padding: 24px;
-    box-shadow: var(--shadow);
-  }
-  .chart-title {
-    font-family: var(--font-head);
-    font-size: 14px; font-weight: 800;
-    color: var(--texto);
-    margin-bottom: 20px;
-    display: flex; align-items: center; justify-content: space-between;
-  }
-  .chart-title span {
-    font-family: var(--font-body); font-size: 11px;
-    color: var(--cinza-txt); font-weight: 600;
-  }
-
-  /* bar chart */
-  .bar-chart { display: flex; flex-direction: column; gap: 10px; }
-  .bar-item { display: flex; align-items: center; gap: 10px; }
-  .bar-loja {
-    font-family: var(--font-body); font-size: 11px; font-weight: 700;
-    color: var(--cinza-txt); width: 56px; text-align: right; flex-shrink: 0;
-  }
-  .bar-track { flex: 1; height: 8px; background: var(--cinza-bg); border-radius: 4px; overflow: hidden; }
-  .bar-fill { height: 100%; border-radius: 4px; transition: width 0.6s ease; }
-  .bar-val { font-family: var(--font-body); font-size: 11px; font-weight: 700; color: var(--texto); width: 60px; }
-
-  /* semanas */
-  .weeks-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 10px; }
-  .week-col { text-align: center; }
-  .week-label { font-family: var(--font-body); font-size: 10px; font-weight: 700; color: var(--cinza-txt); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
-  .week-bar-wrap { display: flex; align-items: flex-end; justify-content: center; height: 64px; }
-  .week-bar { width: 28px; border-radius: 4px 4px 0 0; background: var(--azul); transition: height 0.5s ease; min-height: 2px; }
-  .week-val { font-family: var(--font-body); font-size: 10px; font-weight: 700; color: var(--cinza-txt); margin-top: 6px; }
-
-  /* projeção */
-  .proj-card {
-    background: var(--branco);
-    border: 1px solid var(--cinza-bord);
-    border-radius: var(--radius);
-    padding: 20px 28px;
-    margin-bottom: 24px;
-    display: grid;
-    grid-template-columns: repeat(3,1fr);
-    gap: 0;
-    box-shadow: var(--shadow);
-  }
-  .proj-item { text-align: center; padding: 8px 16px; }
-  .proj-item + .proj-item { border-left: 1px solid var(--cinza-bord); }
-  .proj-label { font-family: var(--font-body); font-size: 10px; font-weight: 700; color: var(--cinza-txt); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 8px; }
-  .proj-val { font-family: var(--font-head); font-size: 22px; font-weight: 900; color: var(--texto); letter-spacing: -0.5px; }
-  .proj-sub { font-family: var(--font-body); font-size: 11px; color: var(--cinza-txt); margin-top: 4px; }
-
-  /* loading */
-  .loading { display: flex; align-items: center; justify-content: center; height: 300px; flex-direction: column; gap: 16px; }
-  .spinner { width: 32px; height: 32px; border: 3px solid var(--cinza-bord); border-top-color: var(--vermelho); border-radius: 50%; animation: spin 0.8s linear infinite; }
-  @keyframes spin { to { transform: rotate(360deg); } }
-  .loading-text { font-family: var(--font-body); font-size: 13px; color: var(--cinza-txt); font-weight: 600; }
-
-  /* erro */
-  .error-msg { background: #fee2e2; border: 1px solid #fca5a5; border-radius: 8px; padding: 16px 20px; font-family: var(--font-body); font-size: 13px; color: var(--danger); margin-bottom: 20px; font-weight: 600; }
-
-  /* responsive */
-  @media (max-width: 1100px) {
-    .kpi-row { grid-template-columns: repeat(2,1fr); }
-    .loja-row { grid-template-columns: 120px 1fr 100px 100px; }
-    .loja-row > *:nth-child(5), .loja-row > *:nth-child(6) { display: none; }
-    .two-col { grid-template-columns: 1fr; }
-    .proj-card { grid-template-columns: 1fr; }
-    .proj-item + .proj-item { border-left: none; border-top: 1px solid var(--cinza-bord); }
-  }
-  @media (max-width: 700px) {
-    .header, .main, .mes-bar { padding-left: 16px; padding-right: 16px; }
-    .kpi-row { grid-template-columns: 1fr 1fr; }
-  }
+@media(max-width:1100px){
+  .kpi-row{grid-template-columns:repeat(2,1fr)}
+  .loja-row{grid-template-columns:120px 1fr 100px 110px}
+  .loja-row>*:nth-child(5),.loja-row>*:nth-child(6){display:none}
+  .two-col{grid-template-columns:1fr}
+  .proj-card{grid-template-columns:1fr}
+  .proj-item+.proj-item{border-left:none;border-top:1px solid var(--cinza-bord)}
+}
+@media(max-width:700px){
+  .header,.main,.mes-bar{padding-left:16px;padding-right:16px}
+  .kpi-row{grid-template-columns:1fr 1fr}
+}
 </style>
 </head>
 <body>
 
-<!-- ══ TELA DE LOGIN ══ -->
+<!-- LOGIN -->
 <div id="login-screen">
   <div class="login-box">
     <div class="login-logo-wrap">
       <div class="login-logo-circle">
-<svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <polygon points="3,25 14,3 14,14" fill="#8B1A1A"/>
-  <polygon points="14,3 25,25 14,14" fill="#6B7280"/>
-  <polygon points="3,25 14,14 10,25" fill="#C0392B"/>
-  <polygon points="14,14 25,25 19,25" fill="#E8E8E8"/>
-  <polygon points="14,10 18,16 14,19 10,16" fill="#C0392B" opacity="0.9"/>
-</svg>
+        <svg viewBox="0 0 28 28" fill="none">
+          <polygon points="3,25 14,3 14,14" fill="#8B1A1A"/>
+          <polygon points="14,3 25,25 14,14" fill="#6B7280"/>
+          <polygon points="3,25 14,14 10,25" fill="#C0392B"/>
+          <polygon points="14,14 25,25 19,25" fill="#E8E8E8"/>
+          <polygon points="14,10 18,16 14,19 10,16" fill="#C0392B" opacity="0.9"/>
+        </svg>
       </div>
       <div class="login-logo-text">Grupo <span>3HAT</span> · Chiquinho</div>
     </div>
@@ -469,14 +171,13 @@
   </div>
 </div>
 
-<!-- ══ DASHBOARD ══ -->
+<!-- DASHBOARD -->
 <div id="dashboard">
-
   <div class="header">
     <div class="header-left">
       <div class="logo-wrap">
         <div class="logo-circle">
-<svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg viewBox="0 0 20 20" fill="none">
             <polygon points="2,18 10,2 10,10" fill="#8B1A1A"/>
             <polygon points="10,2 18,18 10,10" fill="#9CA3AF"/>
             <polygon points="2,18 10,10 7,18" fill="#C0392B"/>
@@ -497,85 +198,88 @@
       <button class="logout-btn" onclick="logout()">Sair</button>
     </div>
   </div>
-
   <div class="mes-bar" id="mes-bar"></div>
-
   <div class="main" id="main-content">
     <div class="loading"><div class="spinner"></div><div class="loading-text">carregando dados...</div></div>
   </div>
-
 </div>
 
 <script>
-// ══════════════════════════════════════════════════════════════
+// ─────────────────────────────────────────────
+// ESTADO GLOBAL — no topo, antes de tudo
+// ─────────────────────────────────────────────
+var SHEET_DATA = [];
+var MES_ATIVO  = 0;
+var SORT_KEY   = 'pct_meta';
+
+// ─────────────────────────────────────────────
 // CONFIG
-// ══════════════════════════════════════════════════════════════
-
-// Hash SHA-256 da senha. Troque pela sua senha antes de subir.
-// Senha atual: 3hat2026
+// ─────────────────────────────────────────────
+// Senha: 3hat2026
 // Para gerar novo hash: https://emn178.github.io/online-tools/sha256.html
-const SENHA_HASH = "4d8a8dd14b1459711d9511dc00a6673e52ca41eb5d8e9125bec11cd4ca99e1f7";
+var SENHA_HASH = "4d8a8dd14b1459711d9511dc00a6673e52ca41eb5d8e9125bec11cd4ca99e1f7";
 
-const SHEET_ID = "1qU8Ny_OqoF4VrI0IU4JuuRvoNnmBOMSf9JkFs1h4PRY";
-const GID      = "1138487353";
+var SHEET_ID = "1qU8Ny_OqoF4VrI0IU4JuuRvoNnmBOMSf9JkFs1h4PRY";
+var GID      = "1138487353";
 
-const LOJAS = [
-  { key: "sjp1",   nome: "SJP 1",    label: "São José dos Pinhais" },
-  { key: "ctba3",  nome: "CTBA 3",   label: "Shopping Estação" },
-  { key: "ctba5",  nome: "CTBA 5",   label: "Jockey Plaza" },
-  { key: "cl2",    nome: "CL 2",     label: "City Center Outlet" },
-  { key: "ctba7",  nome: "CTBA 7",   label: "Curitiba 07" },
-  { key: "ctba9",  nome: "MGA 8",    label: "Havan Maringá" },
-  { key: "ctba11", nome: "CTBA 11",  label: "Shopping Palladium" },
-  { key: "mga3",   nome: "MGA 3",    label: "Av. Center Maringá" },
-  { key: "mga5",   nome: "MGA 5",    label: "Shopping Cidade" },
-  { key: "mga7",   nome: "MGA 7",    label: "Av. Center" },
+var LOJAS = [
+  { key:"sjp1",   nome:"SJP 1",   label:"São José dos Pinhais" },
+  { key:"ctba3",  nome:"CTBA 3",  label:"Shopping Estação" },
+  { key:"ctba5",  nome:"CTBA 5",  label:"Jockey Plaza" },
+  { key:"cl2",    nome:"CL 2",    label:"City Center Outlet" },
+  { key:"ctba7",  nome:"CTBA 7",  label:"Curitiba 07" },
+  { key:"ctba9",  nome:"MGA 8",   label:"Havan Maringá" },
+  { key:"ctba11", nome:"CTBA 11", label:"Shopping Palladium" },
+  { key:"mga3",   nome:"MGA 3",   label:"Av. Center Maringá" },
+  { key:"mga5",   nome:"MGA 5",   label:"Shopping Cidade" },
+  { key:"mga7",   nome:"MGA 7",   label:"Av. Center" },
 ];
 
-const MESES = ["jan","fev","mar","abr","mai","jun","jul","ago","set","out","nov","dez"];
+var MESES = ["jan","fev","mar","abr","mai","jun","jul","ago","set","out","nov","dez"];
 
-// Estrutura: base jan/2026, delta 36 linhas por mês
-const ROW_BASE_RECEITA = 4;
-const ROW_BASE_TM      = 15;
-const ROW_BASE_PA      = 26;
-const DELTA_MES        = 36;
-const COL_DIA1         = 3; // coluna C = índice 3 (1-based)
+var ROW_BASE_RECEITA = 4;
+var ROW_BASE_TM      = 15;
+var ROW_BASE_PA      = 26;
+var DELTA_MES        = 36;
+var COL_DIA1         = 3;
 
-// Colunas especiais (1-based, após os dias)
-// AH=34 ACUM_MES | AI=35 ACUM_ANO | AK=37 META_MES | AL=38 %META | AO=41 MES_ANT | AP=42 %MES_ANT | AQ=43 ANO_ANT | AR=44 %ANO_ANT
-// Semanas: AT=46 S1 | AU=47 S2 | AV=48 S3 | AW=49 S4 | AX=50 S5
-const COL = {
-  ACUM_MES:     34, ACUM_ANO:    35,
-  META_MES:     37, PCT_META:    38,
-  META_ACUM_ANO:39, PCT_META_ANO:40,  // AM=39 meta acum ano | AN=40 % meta acum ano
-  MES_ANT:      41, PCT_MES_ANT: 42,
-  ANO_ANT:      43, PCT_ANO_ANT: 44,
-  SEM1: 46, SEM2: 47, SEM3: 48, SEM4: 49, SEM5: 50,
+var COL = {
+  ACUM_MES:34, ACUM_ANO:35,
+  META_MES:37, PCT_META:38,
+  META_ANO:39, PCT_META_ANO:40,
+  MES_ANT:41,  PCT_MES_ANT:42,
+  ANO_ANT:43,  PCT_ANO_ANT:44,
+  SEM1:46, SEM2:47, SEM3:48, SEM4:49, SEM5:50
 };
 
-// ══════════════════════════════════════════════════════════════
+// ─────────────────────────────────────────────
 // AUTH
-// ══════════════════════════════════════════════════════════════
-const SESSION_KEY = "3hat_auth";
+// ─────────────────────────────────────────────
+var SESSION_KEY = "3hat_auth";
 
-async function sha256(msg) {
-  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(msg));
-  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,"0")).join("");
+function sha256(msg) {
+  return crypto.subtle.digest("SHA-256", new TextEncoder().encode(msg))
+    .then(function(buf) {
+      return Array.from(new Uint8Array(buf))
+        .map(function(b){ return b.toString(16).padStart(2,"0"); })
+        .join("");
+    });
 }
 
-async function tentarLogin() {
-  const pwd = document.getElementById("pwd-input").value;
-  const hash = await sha256(pwd);
-  if (hash === SENHA_HASH) {
-    sessionStorage.setItem(SESSION_KEY, "1");
-    document.getElementById("login-screen").classList.add("hidden");
-    document.getElementById("dashboard").classList.add("visible");
-    iniciar();
-  } else {
-    document.getElementById("login-error").textContent = "Senha incorreta.";
-    document.getElementById("pwd-input").value = "";
-    document.getElementById("pwd-input").focus();
-  }
+function tentarLogin() {
+  var pwd = document.getElementById("pwd-input").value;
+  sha256(pwd).then(function(hash) {
+    if (hash === SENHA_HASH) {
+      sessionStorage.setItem(SESSION_KEY, "1");
+      document.getElementById("login-screen").classList.add("hidden");
+      document.getElementById("dashboard").classList.add("visible");
+      iniciar();
+    } else {
+      document.getElementById("login-error").textContent = "Senha incorreta.";
+      document.getElementById("pwd-input").value = "";
+      document.getElementById("pwd-input").focus();
+    }
+  });
 }
 
 function logout() {
@@ -583,74 +287,59 @@ function logout() {
   location.reload();
 }
 
-document.getElementById("pwd-input").addEventListener("keydown", e => {
+document.getElementById("pwd-input").addEventListener("keydown", function(e) {
   if (e.key === "Enter") tentarLogin();
   document.getElementById("login-error").textContent = "";
 });
 
-// Verifica sessão existente
-if (sessionStorage.getItem(SESSION_KEY) === "1") {
-  document.getElementById("login-screen").classList.add("hidden");
-  document.getElementById("dashboard").classList.add("visible");
-  iniciar();
-}
-
-// ══════════════════════════════════════════════════════════════
-// DADOS — Google Sheets via CSV export
-// ══════════════════════════════════════════════════════════════
-let SHEET_DATA = []; // todas as linhas [row][col] 1-based
-let MES_ATIVO  = 0;  // índice 0=jan
-
-async function fetchSheet() {
-  const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${GID}`;
-  const res  = await fetch(url);
-  const text = await res.text();
-  // Parse CSV respeitando campos entre aspas
-  const rows = text.trim().split("\n").map(line => {
-    const cells = [""]; let inQ = false;
-    for (const ch of line) {
-      if (ch === '"') { inQ = !inQ; continue; }
-      if (ch === "," && !inQ) { cells.push(""); continue; }
-      cells[cells.length-1] += ch;
-    }
-    return cells;
-  });
-  // Adiciona linha 0 vazia para indexação 1-based
-  SHEET_DATA = [[]].concat(rows.map(r => [""].concat(r)));
+// ─────────────────────────────────────────────
+// DADOS
+// ─────────────────────────────────────────────
+function fetchSheet() {
+  var url = "https://docs.google.com/spreadsheets/d/" + SHEET_ID + "/export?format=csv&gid=" + GID;
+  return fetch(url)
+    .then(function(res) {
+      if (!res.ok) throw new Error("Erro HTTP " + res.status);
+      return res.text();
+    })
+    .then(function(text) {
+      if (!text || text.trim().length === 0) throw new Error("Planilha vazia");
+      var rows = text.trim().split("\n").map(function(line) {
+        var cells = [""]; var inQ = false;
+        for (var i = 0; i < line.length; i++) {
+          var ch = line[i];
+          if (ch === '"') { inQ = !inQ; continue; }
+          if (ch === "," && !inQ) { cells.push(""); continue; }
+          cells[cells.length-1] += ch;
+        }
+        return cells;
+      });
+      SHEET_DATA = [[]].concat(rows.map(function(r){ return [""].concat(r); }));
+      console.log("Planilha carregada: " + (SHEET_DATA.length-1) + " linhas");
+    });
 }
 
 function cell(row, col) {
-  try { return (SHEET_DATA[row]?.[col] || "").trim(); } catch { return ""; }
+  try { return (SHEET_DATA[row] && SHEET_DATA[row][col] ? SHEET_DATA[row][col] : "").trim(); }
+  catch(e) { return ""; }
 }
 
 function num(row, col) {
-  const s = cell(row, col)
-    .replace(/R\$\s*/g,"").replace(/\./g,"").replace(",",".").replace(/%/g,"").trim();
-  return parseFloat(s) || 0;
-}
-
-function rowOffset(mesIdx) {
-  return mesIdx * DELTA_MES;
+  try {
+    var s = cell(row, col)
+      .replace(/R\$\s*/g,"").replace(/\./g,"").replace(",",".").replace(/%/g,"").trim();
+    var v = parseFloat(s);
+    return isNaN(v) ? 0 : v;
+  } catch(e) { return 0; }
 }
 
 function getLojaData(mesIdx, lojaIdx) {
-  const off = rowOffset(mesIdx);
-  const rR  = ROW_BASE_RECEITA + off + lojaIdx;
-  const rTM = ROW_BASE_TM      + off + lojaIdx;
-  const rPA = ROW_BASE_PA      + off + lojaIdx;
-
-  // Dias com dados (col C=3 a col AG=33)
-  const receitas = [], tms = [], pessoas = [];
-  for (let d = 1; d <= 31; d++) {
-    const c = COL_DIA1 + (d - 1);
-    receitas.push(num(rR, c));
-    tms.push(num(rTM, c));
-    pessoas.push(num(rPA, c));
-  }
-
+  var off = mesIdx * DELTA_MES;
+  var rR  = ROW_BASE_RECEITA + off + lojaIdx;
+  var rTM = ROW_BASE_TM      + off + lojaIdx;
+  var rPA = ROW_BASE_PA      + off + lojaIdx;
   return {
     receita_acum: num(rR,  COL.ACUM_MES),
-    receita_ano:  num(rR,  COL.ACUM_ANO),
     meta_mes:     num(rR,  COL.META_MES),
     pct_meta:     num(rR,  COL.PCT_META),
     mes_ant:      num(rR,  COL.MES_ANT),
@@ -658,59 +347,51 @@ function getLojaData(mesIdx, lojaIdx) {
     tm_acum:      num(rTM, COL.ACUM_MES),
     tm_meta:      num(rTM, COL.META_MES),
     pa_acum:      num(rPA, COL.ACUM_MES),
-    sem1:  num(rR, COL.SEM1), sem2: num(rR, COL.SEM2),
-    sem3:  num(rR, COL.SEM3), sem4: num(rR, COL.SEM4),
-    sem5:  num(rR, COL.SEM5),
-    receitas_dia: receitas,
-    tms_dia: tms,
-    pessoas_dia: pessoas,
-  };
-}
-
-function getTotalData(mesIdx) {
-  const off = rowOffset(mesIdx);
-  const rR  = ROW_BASE_RECEITA + off + 10; // linha TOTAL = loja 10
-  const rTM = ROW_BASE_TM      + off + 10;
-  const rPA = ROW_BASE_PA      + off + 10;
-  const receita_ano  = num(rR,  COL.ACUM_ANO);
-  const meta_acum_ano = num(rR, COL.META_ACUM_ANO);
-  const pct_meta_ano = meta_acum_ano > 0 ? (receita_ano / meta_acum_ano) * 100 : num(rR, COL.PCT_META_ANO);
-  return {
-    receita_acum:    num(rR,  COL.ACUM_MES),
-    meta_mes:        num(rR,  COL.META_MES),
-    pct_meta:        num(rR,  COL.PCT_META),
-    mes_ant:         num(rR,  COL.MES_ANT),
-    pct_mes_ant:     num(rR,  COL.PCT_MES_ANT),
-    ano_ant:         num(rR,  COL.ANO_ANT),
-    pct_ano_ant:     num(rR,  COL.PCT_ANO_ANT),
-    receita_ano,
-    meta_acum_ano,
-    pct_meta_ano,
-    pa_acum:         num(rPA, COL.ACUM_MES),
-    tm_total:        num(rTM, COL.ACUM_MES), // TM da linha TOTAL da planilha (receita/atend)
     sem1: num(rR,COL.SEM1), sem2: num(rR,COL.SEM2),
     sem3: num(rR,COL.SEM3), sem4: num(rR,COL.SEM4),
     sem5: num(rR,COL.SEM5),
   };
 }
 
-// ══════════════════════════════════════════════════════════════
+function getTotalData(mesIdx) {
+  var off = mesIdx * DELTA_MES;
+  var rR  = ROW_BASE_RECEITA + off + 10;
+  var rTM = ROW_BASE_TM      + off + 10;
+  var rPA = ROW_BASE_PA      + off + 10;
+  var receita_ano   = num(rR, COL.ACUM_ANO);
+  var meta_ano      = num(rR, COL.META_ANO);
+  var pct_meta_ano  = meta_ano > 0 ? Math.round(receita_ano / meta_ano * 100) : num(rR, COL.PCT_META_ANO);
+  return {
+    receita_acum:  num(rR,  COL.ACUM_MES),
+    meta_mes:      num(rR,  COL.META_MES),
+    pct_meta:      num(rR,  COL.PCT_META),
+    mes_ant:       num(rR,  COL.MES_ANT),
+    pct_mes_ant:   num(rR,  COL.PCT_MES_ANT),
+    ano_ant:       num(rR,  COL.ANO_ANT),
+    pct_ano_ant:   num(rR,  COL.PCT_ANO_ANT),
+    receita_ano:   receita_ano,
+    meta_ano:      meta_ano,
+    pct_meta_ano:  pct_meta_ano,
+    pa_acum:       num(rPA, COL.ACUM_MES),
+    tm_total:      num(rTM, COL.ACUM_MES),
+    sem1: num(rR,COL.SEM1), sem2: num(rR,COL.SEM2),
+    sem3: num(rR,COL.SEM3), sem4: num(rR,COL.SEM4),
+    sem5: num(rR,COL.SEM5),
+  };
+}
+
+// ─────────────────────────────────────────────
 // FORMATAÇÃO
-// ══════════════════════════════════════════════════════════════
+// ─────────────────────────────────────────────
 function fBRL(v) {
   if (!v || v === 0) return "—";
   if (v >= 1e6) return "R$ " + (v/1e6).toFixed(2).replace(".",",") + "M";
   if (v >= 1e3) return "R$ " + (v/1e3).toFixed(1).replace(".",",") + "k";
   return "R$ " + v.toFixed(2).replace(".",",");
 }
-function fPct(v) {
-  if (!v || v === 0) return "—";
-  return v.toFixed(0) + "%";
-}
-function fNum(v) {
-  if (!v || v === 0) return "—";
-  return v.toLocaleString("pt-BR");
-}
+function fPct(v) { if (!v || v === 0) return "—"; return Math.round(v) + "%"; }
+function fNum(v) { if (!v || v === 0) return "—"; return v.toLocaleString("pt-BR"); }
+function fTM(v)  { return v > 0 ? "R$ " + v.toFixed(2).replace(".",",") : "—"; }
 
 function badgeClass(pct) {
   if (!pct) return "";
@@ -718,7 +399,6 @@ function badgeClass(pct) {
   if (pct >= 85)  return "badge-warn";
   return "badge-bad";
 }
-
 function barColor(pct) {
   if (!pct) return "var(--cinza-txt)";
   if (pct >= 100) return "var(--ok)";
@@ -726,29 +406,15 @@ function barColor(pct) {
   return "var(--danger)";
 }
 
-// ══════════════════════════════════════════════════════════════
+// ─────────────────────────────────────────────
 // RENDER
-// ══════════════════════════════════════════════════════════════
-// ══════════════════════════════════════════════════════════════
-// ORDENAÇÃO DO RANKING
-// ══════════════════════════════════════════════════════════════
-let SORT_KEY = 'pct_meta'; // padrão: % meta
-
-function setSortKey(key) {
-  SORT_KEY = key;
-  renderDashboard();
-}
-
-// Adiciona proj_loja em cada loja para suportar ordenação
-function calcProjLoja(l, diasCorridos, diasMes) {
-  return diasCorridos > 0 ? (l.receita_acum / diasCorridos) * diasMes : 0;
-}
-
+// ─────────────────────────────────────────────
 function renderMesBar() {
-  const bar = document.getElementById("mes-bar");
-  bar.innerHTML = MESES.map((m, i) =>
-    `<button class="mes-btn ${i===MES_ATIVO?'active':''}" onclick="trocarMes(${i})">${m.toUpperCase()}/26</button>`
-  ).join("");
+  var html = "";
+  for (var i = 0; i < MESES.length; i++) {
+    html += '<button class="mes-btn ' + (i===MES_ATIVO?'active':'') + '" onclick="trocarMes(' + i + ')">' + MESES[i].toUpperCase() + '/26</button>';
+  }
+  document.getElementById("mes-bar").innerHTML = html;
 }
 
 function trocarMes(idx) {
@@ -757,252 +423,234 @@ function trocarMes(idx) {
   renderDashboard();
 }
 
+function setSortKey(key) {
+  SORT_KEY = key;
+  renderDashboard();
+}
+
 function renderDashboard() {
-  const total = getTotalData(MES_ATIVO);
-  const lojas = LOJAS.map((l,i) => {
-    const d = getLojaData(MES_ATIVO, i);
-    const proj_loja = diasCorridos > 0 ? (d.receita_acum / diasCorridos) * diasMes : 0;
-    return { ...l, ...d, proj_loja };
-  });
-  const mesNome = MESES[MES_ATIVO].toUpperCase() + "/26";
+  var total = getTotalData(MES_ATIVO);
 
-  document.getElementById("header-mes").textContent = mesNome;
-
-  // Projeção: dias corridos no mês atual
-  const hoje = new Date();
-  const diasMes = new Date(hoje.getFullYear(), MES_ATIVO+1, 0).getDate();
-  const diasCorridos = MES_ATIVO === hoje.getMonth()
+  // Calcular dias corridos ANTES de usar em qualquer cálculo
+  var hoje = new Date();
+  var diasMes = new Date(hoje.getFullYear(), MES_ATIVO+1, 0).getDate();
+  var diasCorridos = MES_ATIVO === hoje.getMonth()
     ? Math.min(hoje.getDate(), diasMes)
     : diasMes;
-  const proj = diasCorridos > 0
-    ? (total.receita_acum / diasCorridos) * diasMes
-    : 0;
-  const projPct = total.meta_mes > 0 ? (proj / total.meta_mes) * 100 : 0;
 
-  // AJUSTE 1: TM geral = linha TOTAL da planilha (receita total ÷ atendimentos total)
-  const tmGeral = total.tm_total || 0;
-  const paTotal = total.pa_acum;
+  // Montar lojas com projeção
+  var lojas = [];
+  for (var i = 0; i < LOJAS.length; i++) {
+    var d = getLojaData(MES_ATIVO, i);
+    var proj_loja = diasCorridos > 0 ? (d.receita_acum / diasCorridos) * diasMes : 0;
+    var loja = {};
+    for (var k in LOJAS[i]) loja[k] = LOJAS[i][k];
+    for (var k in d) loja[k] = d[k];
+    loja.proj_loja = proj_loja;
+    lojas.push(loja);
+  }
 
-  const main = document.getElementById("main-content");
-  main.innerHTML = `
-    <!-- KPIs -->
-    <div class="kpi-row">
-      <div class="kpi-card" style="--top-color:var(--vermelho)">
-        <div class="kpi-label">Receita Acumulada</div>
-        <div class="kpi-value">${fBRL(total.receita_acum)}</div>
-        <div class="kpi-sub">
-          <span class="kpi-badge ${badgeClass(total.pct_meta)}">${fPct(total.pct_meta)} da meta</span>
-        </div>
-      </div>
-      <div class="kpi-card" style="--top-color:var(--azul)">
-        <div class="kpi-label">Projeção Fechamento</div>
-        <div class="kpi-value">${fBRL(proj)}</div>
-        <div class="kpi-sub">
-          <span class="kpi-badge ${badgeClass(projPct)}">${fPct(projPct)} da meta</span>
-          &nbsp;·&nbsp; meta ${fBRL(total.meta_mes)}
-        </div>
-      </div>
-      <div class="kpi-card" style="--top-color:var(--ok)">
-        <div class="kpi-label">Ticket Médio Líquido</div>
-        <div class="kpi-value">${tmGeral > 0 ? 'R$ ' + tmGeral.toFixed(2).replace('.',',') : '—'}</div>
-        <div class="kpi-sub">receita ÷ atendimentos (rede)</div>
-      </div>
-      <div class="kpi-card" style="--top-color:var(--warn)">
-        <div class="kpi-label">Pessoas Atendidas</div>
-        <div class="kpi-value">${fNum(paTotal)}</div>
-        <div class="kpi-sub">vs mês ant. <span class="kpi-badge ${badgeClass(total.pct_mes_ant)}">${fPct(total.pct_mes_ant)}</span></div>
-      </div>
-    </div>
+  var proj    = diasCorridos > 0 ? (total.receita_acum / diasCorridos) * diasMes : 0;
+  var projPct = total.meta_mes > 0 ? (proj / total.meta_mes) * 100 : 0;
+  var tmGeral = total.tm_total || 0;
 
-    <!-- Projeção detalhada -->
-    <div class="proj-card">
-      <div class="proj-item">
-        <div class="proj-label">Dias corridos / total</div>
-        <div class="proj-val">${diasCorridos}<span style="font-size:16px;color:var(--cinza-txt)">/${diasMes}</span></div>
-        <div class="proj-sub">${((diasCorridos/diasMes)*100).toFixed(0)}% do mês</div>
-      </div>
-      <div class="proj-item">
-        <div class="proj-label">Receita Acumulada Ano</div>
-        <div class="proj-val" style="font-size:20px">${fBRL(total.receita_ano)}</div>
-        <div class="proj-sub">
-          <span class="kpi-badge ${badgeClass(total.pct_meta_ano)}">${fPct(total.pct_meta_ano)} da meta ano</span>
-          &nbsp;·&nbsp; vs ano ant. <span style="color:${total.pct_ano_ant>=100?'var(--ok)':'var(--danger)'}">${fPct(total.pct_ano_ant)}</span>
-        </div>
-      </div>
-      <div class="proj-item">
-        <div class="proj-label">vs Mês anterior</div>
-        <div class="proj-val" style="font-size:20px">${fBRL(total.mes_ant)}</div>
-        <div class="proj-sub">atual representa <span style="color:${total.pct_mes_ant>=100?'var(--ok)':'var(--danger)'}">${fPct(total.pct_mes_ant)}</span></div>
-      </div>
-    </div>
+  document.getElementById("header-mes").textContent = MESES[MES_ATIVO].toUpperCase() + "/26";
 
-    <!-- Ranking lojas -->
-    <div class="section-title" style="justify-content:space-between;align-items:center">
-      <span>ranking de lojas — receita vs meta</span>
-      <div style="display:flex;gap:6px;flex-shrink:0">
-        ${['pct_meta','receita_acum','proj_loja','tm_acum','tm_meta','pa_acum'].map(k => {
-          const labels = {pct_meta:'% Meta',receita_acum:'Realizado',proj_loja:'Projeção',tm_acum:'TM',tm_meta:'Meta TM',pa_acum:'Atend.'};
-          return `<button onclick="setSortKey('${k}')" id="sort_${k}"
-            style="font-family:var(--font-body);font-size:10px;font-weight:700;padding:3px 10px;
-                   border-radius:20px;border:1px solid var(--cinza-bord);cursor:pointer;
-                   background:${SORT_KEY==='${k}'?'var(--azul)':'var(--cinza-bg)'};
-                   color:${SORT_KEY==='${k}'?'#fff':'var(--cinza-txt)'};letter-spacing:0.04em">
-            ${labels[k]}</button>`;
-        }).join("")}
-      </div>
-    </div>
-    <div class="lojas-grid" id="lojas-grid-render">
-      ${(() => {
-        const sorted = [...lojas].sort((a,b) => {
-          const ak = a[SORT_KEY] || 0;
-          const bk = b[SORT_KEY] || 0;
-          return bk - ak;
-        });
-        return sorted.map(l => {
-          const pct = l.pct_meta || 0;
-          const statusClass = pct >= 100 ? 'acima' : pct >= 85 ? 'quase' : 'abaixo';
-          const color = barColor(pct);
-          const barW = Math.min(pct, 130);
-          // projeção por loja
-          const projLoja = diasCorridos > 0 ? (l.receita_acum / diasCorridos) * diasMes : 0;
-          const projPctLoja = l.meta_mes > 0 ? (projLoja / l.meta_mes) * 100 : 0;
-          const projColor = barColor(projPctLoja);
-          // TM % meta
-          const tmPct = l.tm_meta > 0 ? (l.tm_acum / l.tm_meta) * 100 : 0;
-          const tmColor = barColor(tmPct);
-          return `
-          <div class="loja-row ${statusClass}">
-            <div>
-              <div class="loja-name">${l.nome}</div>
-              <div class="loja-name-sub">${l.label}</div>
-            </div>
-            <div class="progress-wrap">
-              <div class="progress-bar-bg">
-                <div class="progress-bar-fill" style="width:${barW}%;background:${color}"></div>
-              </div>
-              <div class="progress-pct" style="color:${color}">${fPct(pct)} da meta</div>
-            </div>
-            <div class="loja-metric">
-              <div class="loja-metric-val">${fBRL(l.receita_acum)}</div>
-              <div class="loja-metric-label">realizado</div>
-            </div>
-            <div class="loja-metric">
-              <div class="loja-metric-val" style="color:${projColor}">${fBRL(projLoja)}</div>
-              <div class="loja-metric-label">projeção <span style="color:${projColor};font-weight:700">${fPct(projPctLoja)}</span></div>
-            </div>
-            <div class="loja-metric">
-              <div class="loja-metric-val" style="color:${tmColor}">R$ ${(l.tm_acum||0).toFixed(2).replace('.',',')}</div>
-              <div class="loja-metric-label">TM · meta R$ ${(l.tm_meta||0).toFixed(2).replace('.',',')} <span style="color:${tmColor};font-weight:700">${tmPct>0?fPct(tmPct):''}</span></div>
-            </div>
-            <div class="loja-metric">
-              <div class="loja-metric-val">${fNum(l.pa_acum)}</div>
-              <div class="loja-metric-label">atendimentos</div>
-            </div>
-          </div>`;
-        }).join("");
-      })()}
-    </div>
+  // ── KPIs
+  var kpiHtml =
+    '<div class="kpi-row">' +
+      kpiCard("var(--vermelho)", "Receita Acumulada", fBRL(total.receita_acum),
+        '<span class="kpi-badge ' + badgeClass(total.pct_meta) + '">' + fPct(total.pct_meta) + ' da meta</span>') +
+      kpiCard("var(--azul)", "Projeção Fechamento", fBRL(proj),
+        '<span class="kpi-badge ' + badgeClass(projPct) + '">' + fPct(projPct) + ' da meta</span> · meta ' + fBRL(total.meta_mes)) +
+      kpiCard("var(--ok)", "Ticket Médio Líquido", fTM(tmGeral), "receita ÷ atendimentos (rede)") +
+      kpiCard("var(--warn)", "Pessoas Atendidas", fNum(total.pa_acum),
+        'vs mês ant. <span class="kpi-badge ' + badgeClass(total.pct_mes_ant) + '">' + fPct(total.pct_mes_ant) + '</span>') +
+    '</div>';
 
-    <!-- Charts -->
-    <div class="two-col">
-      <!-- Ticket médio por loja -->
-      <div class="chart-card">
-        <div class="chart-title">Ticket Médio por Loja <span>realizado vs meta do mês</span></div>
-        <div style="display:flex;flex-direction:column;gap:12px">
-          ${lojas
-            .filter(l => l.tm_acum > 0)
-            .sort((a,b) => (b.tm_acum||0)-(a.tm_acum||0))
-            .map(l => {
-              const maxTM = Math.max(...lojas.map(x=>x.tm_acum||0));
-              const w = maxTM > 0 ? ((l.tm_acum/maxTM)*100).toFixed(1) : 0;
-              const tmPct = l.tm_meta > 0 ? (l.tm_acum / l.tm_meta) * 100 : 0;
-              const tmColor = barColor(tmPct);
-              return `
-              <div>
-                <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
-                  <div class="bar-loja">${l.nome}</div>
-                  <div style="flex:1;height:8px;background:var(--cinza-bg);border-radius:4px;overflow:hidden">
-                    <div style="width:${w}%;height:100%;border-radius:4px;background:var(--azul);transition:width 0.6s"></div>
-                  </div>
-                  <div style="font-family:var(--font-body);font-size:12px;font-weight:700;color:var(--texto);min-width:60px;text-align:right">
-                    R$ ${(l.tm_acum||0).toFixed(2).replace('.',',')}
-                  </div>
-                </div>
-                <div style="display:flex;align-items:center;gap:10px;padding-left:66px">
-                  <div style="font-family:var(--font-body);font-size:10px;color:var(--cinza-txt)">
-                    Meta: R$ ${(l.tm_meta||0).toFixed(2).replace('.',',')}
-                  </div>
-                  <span class="kpi-badge ${badgeClass(tmPct)}" style="font-size:10px;padding:1px 6px">${tmPct>0?fPct(tmPct):'s/ meta'}</span>
-                </div>
-              </div>`;
-            }).join("")}
-        </div>
-      </div>
+  function kpiCard(color, label, value, sub) {
+    return '<div class="kpi-card" style="--top-color:' + color + '">' +
+      '<div class="kpi-label">' + label + '</div>' +
+      '<div class="kpi-value">' + value + '</div>' +
+      '<div class="kpi-sub">' + sub + '</div>' +
+      '</div>';
+  }
 
-      <!-- Tendência semanal da rede -->
-      <div class="chart-card">
-        <div class="chart-title">Receita por Semana — Rede <span>R$ acumulado</span></div>
-        ${(() => {
-          const sems = [total.sem1, total.sem2, total.sem3, total.sem4, total.sem5];
-          const maxS = Math.max(...sems.filter(s=>s>0));
-          return `<div class="weeks-grid">
-            ${sems.map((s,i) => {
-              const h = maxS > 0 ? Math.max((s/maxS)*56, s>0?4:0) : 0;
-              return `
-              <div class="week-col">
-                <div class="week-label">SEM ${i+1}</div>
-                <div class="week-bar-wrap">
-                  <div class="week-bar" style="height:${h}px;${s===0?'opacity:0.2':''}"></div>
-                </div>
-                <div class="week-val">${s>0?fBRL(s):'—'}</div>
-              </div>`;
-            }).join("")}
-          </div>`;
-        })()}
-      </div>
-    </div>
+  // ── Projeção detalhada
+  var projHtml =
+    '<div class="proj-card">' +
+      '<div class="proj-item">' +
+        '<div class="proj-label">Dias corridos / total</div>' +
+        '<div class="proj-val">' + diasCorridos + '<span style="font-size:16px;color:var(--cinza-txt)">/' + diasMes + '</span></div>' +
+        '<div class="proj-sub">' + Math.round(diasCorridos/diasMes*100) + '% do mês</div>' +
+      '</div>' +
+      '<div class="proj-item">' +
+        '<div class="proj-label">Receita Acumulada Ano</div>' +
+        '<div class="proj-val" style="font-size:20px">' + fBRL(total.receita_ano) + '</div>' +
+        '<div class="proj-sub">' +
+          '<span class="kpi-badge ' + badgeClass(total.pct_meta_ano) + '">' + fPct(total.pct_meta_ano) + ' da meta ano</span>' +
+          ' · vs ano ant. <span style="color:' + (total.pct_ano_ant>=100?'var(--ok)':'var(--danger)') + '">' + fPct(total.pct_ano_ant) + '</span>' +
+        '</div>' +
+      '</div>' +
+      '<div class="proj-item">' +
+        '<div class="proj-label">vs Mês anterior</div>' +
+        '<div class="proj-val" style="font-size:20px">' + fBRL(total.mes_ant) + '</div>' +
+        '<div class="proj-sub">atual representa <span style="color:' + (total.pct_mes_ant>=100?'var(--ok)':'var(--danger)') + '">' + fPct(total.pct_mes_ant) + '</span></div>' +
+      '</div>' +
+    '</div>';
 
-    <!-- Atendimentos por loja -->
-    <div class="section-title">pessoas atendidas — ranking</div>
-    <div class="chart-card" style="margin-bottom:32px">
-      <div class="bar-chart">
-        ${lojas
-          .filter(l => l.pa_acum > 0)
-          .sort((a,b) => (b.pa_acum||0)-(a.pa_acum||0))
-          .map(l => {
-            const maxPA = Math.max(...lojas.map(x=>x.pa_acum||0));
-            const w = maxPA > 0 ? ((l.pa_acum/maxPA)*100).toFixed(1) : 0;
-            return `
-            <div class="bar-item">
-              <div class="bar-loja">${l.nome}</div>
-              <div class="bar-track"><div class="bar-fill" style="width:${w}%;background:var(--warn)"></div></div>
-              <div class="bar-val" style="width:70px">${fNum(l.pa_acum)}</div>
-            </div>`;
-          }).join("")}
-      </div>
-    </div>
-  `;
+  // ── Botões de ordenação
+  var sortKeys   = ['pct_meta','receita_acum','proj_loja','tm_acum','tm_meta','pa_acum'];
+  var sortLabels = {'pct_meta':'% Meta','receita_acum':'Realizado','proj_loja':'Projeção','tm_acum':'TM Real','tm_meta':'Meta TM','pa_acum':'Atend.'};
+  var sortBtns = "";
+  for (var si = 0; si < sortKeys.length; si++) {
+    var sk = sortKeys[si];
+    sortBtns += '<button class="sort-btn ' + (SORT_KEY===sk?'active':'') + '" onclick="setSortKey(\'' + sk + '\')">' + sortLabels[sk] + '</button>';
+  }
 
-  // Timestamp
+  // ── Ranking lojas
+  var sorted = lojas.slice().sort(function(a,b){ return (b[SORT_KEY]||0) - (a[SORT_KEY]||0); });
+  var lojaRows = "";
+  for (var li = 0; li < sorted.length; li++) {
+    var l = sorted[li];
+    var pct        = l.pct_meta || 0;
+    var statusCls  = pct >= 100 ? 'acima' : pct >= 85 ? 'quase' : 'abaixo';
+    var color      = barColor(pct);
+    var barW       = Math.min(pct, 130);
+    var projPctL   = l.meta_mes > 0 ? (l.proj_loja / l.meta_mes) * 100 : 0;
+    var projColorL = barColor(projPctL);
+    var tmPct      = l.tm_meta > 0 ? (l.tm_acum / l.tm_meta) * 100 : 0;
+    var tmColorL   = barColor(tmPct);
+
+    lojaRows +=
+      '<div class="loja-row ' + statusCls + '">' +
+        '<div>' +
+          '<div class="loja-name">' + l.nome + '</div>' +
+          '<div class="loja-name-sub">' + l.label + '</div>' +
+        '</div>' +
+        '<div>' +
+          '<div class="progress-bar-bg"><div class="progress-bar-fill" style="width:' + barW + '%;background:' + color + '"></div></div>' +
+          '<div class="progress-pct" style="color:' + color + '">' + fPct(pct) + ' da meta</div>' +
+        '</div>' +
+        '<div class="loja-metric">' +
+          '<div class="loja-metric-val">' + fBRL(l.receita_acum) + '</div>' +
+          '<div class="loja-metric-label">realizado</div>' +
+        '</div>' +
+        '<div class="loja-metric">' +
+          '<div class="loja-metric-val" style="color:' + projColorL + '">' + fBRL(l.proj_loja) + '</div>' +
+          '<div class="loja-metric-label">projeção <span style="color:' + projColorL + ';font-weight:700">' + fPct(projPctL) + '</span></div>' +
+        '</div>' +
+        '<div class="loja-metric">' +
+          '<div class="loja-metric-val" style="color:' + tmColorL + '">' + fTM(l.tm_acum) + '</div>' +
+          '<div class="loja-metric-label">TM · meta ' + fTM(l.tm_meta) + ' <span style="color:' + tmColorL + ';font-weight:700">' + (tmPct>0?fPct(tmPct):'') + '</span></div>' +
+        '</div>' +
+        '<div class="loja-metric">' +
+          '<div class="loja-metric-val">' + fNum(l.pa_acum) + '</div>' +
+          '<div class="loja-metric-label">atendimentos</div>' +
+        '</div>' +
+      '</div>';
+  }
+
+  // ── Chart TM
+  var tmLojas = lojas.filter(function(l){ return l.tm_acum > 0; })
+    .sort(function(a,b){ return b.tm_acum - a.tm_acum; });
+  var maxTM = tmLojas.length > 0 ? tmLojas[0].tm_acum : 1;
+  var tmRows = "";
+  for (var ti = 0; ti < tmLojas.length; ti++) {
+    var tl = tmLojas[ti];
+    var tw    = maxTM > 0 ? (tl.tm_acum/maxTM*100).toFixed(1) : 0;
+    var tPct  = tl.tm_meta > 0 ? (tl.tm_acum/tl.tm_meta*100) : 0;
+    var tCol  = barColor(tPct);
+    tmRows +=
+      '<div style="margin-bottom:10px">' +
+        '<div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">' +
+          '<div class="bar-loja">' + tl.nome + '</div>' +
+          '<div style="flex:1;height:8px;background:var(--cinza-bg);border-radius:4px;overflow:hidden">' +
+            '<div style="width:' + tw + '%;height:100%;border-radius:4px;background:var(--azul);transition:width 0.6s"></div>' +
+          '</div>' +
+          '<div style="font-family:var(--font-body);font-size:12px;font-weight:700;color:var(--texto);min-width:64px;text-align:right">' + fTM(tl.tm_acum) + '</div>' +
+        '</div>' +
+        '<div style="display:flex;align-items:center;gap:8px;padding-left:66px">' +
+          '<span style="font-family:var(--font-body);font-size:10px;color:var(--cinza-txt)">Meta: ' + fTM(tl.tm_meta) + '</span>' +
+          '<span class="kpi-badge ' + badgeClass(tPct) + '" style="font-size:10px;padding:1px 6px">' + (tPct>0?fPct(tPct):'s/ meta') + '</span>' +
+        '</div>' +
+      '</div>';
+  }
+
+  // ── Chart semanas
+  var sems = [total.sem1,total.sem2,total.sem3,total.sem4,total.sem5];
+  var maxS = 0;
+  for (var si2 = 0; si2 < sems.length; si2++) { if (sems[si2] > maxS) maxS = sems[si2]; }
+  var semRows = '<div class="weeks-grid">';
+  for (var wi = 0; wi < sems.length; wi++) {
+    var s = sems[wi];
+    var h = maxS > 0 ? Math.max(s/maxS*56, s>0?4:0) : 0;
+    semRows +=
+      '<div class="week-col">' +
+        '<div class="week-label">SEM ' + (wi+1) + '</div>' +
+        '<div class="week-bar-wrap"><div class="week-bar" style="height:' + h + 'px;' + (s===0?'opacity:0.2':'') + '"></div></div>' +
+        '<div class="week-val">' + (s>0?fBRL(s):'—') + '</div>' +
+      '</div>';
+  }
+  semRows += '</div>';
+
+  // ── Chart atendimentos
+  var paLojas = lojas.filter(function(l){ return l.pa_acum > 0; })
+    .sort(function(a,b){ return b.pa_acum - a.pa_acum; });
+  var maxPA = paLojas.length > 0 ? paLojas[0].pa_acum : 1;
+  var paRows = "";
+  for (var pi = 0; pi < paLojas.length; pi++) {
+    var pl = paLojas[pi];
+    var pw = maxPA > 0 ? (pl.pa_acum/maxPA*100).toFixed(1) : 0;
+    paRows +=
+      '<div class="bar-item">' +
+        '<div class="bar-loja">' + pl.nome + '</div>' +
+        '<div class="bar-track"><div class="bar-fill" style="width:' + pw + '%;background:var(--warn)"></div></div>' +
+        '<div class="bar-val" style="width:70px">' + fNum(pl.pa_acum) + '</div>' +
+      '</div>';
+  }
+
+  // ── Montar tudo
+  document.getElementById("main-content").innerHTML =
+    kpiHtml +
+    projHtml +
+    '<div class="section-title"><span>ranking de lojas — receita vs meta</span><span style="display:flex;gap:6px;flex-shrink:0">' + sortBtns + '</span><span class="section-title-line"></span></div>' +
+    '<div class="lojas-grid">' + lojaRows + '</div>' +
+    '<div class="two-col">' +
+      '<div class="chart-card"><div class="chart-title">Ticket Médio por Loja <span>realizado vs meta do mês</span></div>' + tmRows + '</div>' +
+      '<div class="chart-card"><div class="chart-title">Receita por Semana — Rede <span>R$ acumulado</span></div>' + semRows + '</div>' +
+    '</div>' +
+    '<div class="section-title"><span>pessoas atendidas — ranking</span><span class="section-title-line"></span></div>' +
+    '<div class="chart-card" style="margin-bottom:32px"><div class="bar-chart">' + paRows + '</div></div>';
+
   document.getElementById("update-ts").textContent =
     "D-1 · " + new Date().toLocaleDateString("pt-BR",{day:"2-digit",month:"2-digit",year:"numeric"});
 }
 
-// ══════════════════════════════════════════════════════════════
+// ─────────────────────────────────────────────
 // INICIALIZAÇÃO
-// ══════════════════════════════════════════════════════════════
-async function iniciar() {
-  // Mês atual como padrão
+// ─────────────────────────────────────────────
+function iniciar() {
   MES_ATIVO = new Date().getMonth();
   renderMesBar();
+  document.getElementById("main-content").innerHTML =
+    '<div class="loading"><div class="spinner"></div><div class="loading-text">carregando dados...</div></div>';
+  fetchSheet()
+    .then(function() {
+      renderDashboard();
+    })
+    .catch(function(e) {
+      document.getElementById("main-content").innerHTML =
+        '<div class="error-msg">Erro ao carregar planilha: ' + e.message + '<br><small>Verifique se a planilha está pública (gid=' + GID + ')</small></div>';
+      console.error("Erro fetchSheet:", e);
+    });
+}
 
-  try {
-    await fetchSheet();
-    renderDashboard();
-  } catch(e) {
-    document.getElementById("main-content").innerHTML =
-      `<div class="error-msg">Erro ao carregar dados da planilha. Verifique se ela está pública.<br><small>${e.message}</small></div>`;
-  }
+// Verificar sessão ao carregar
+if (sessionStorage.getItem(SESSION_KEY) === "1") {
+  document.getElementById("login-screen").classList.add("hidden");
+  document.getElementById("dashboard").classList.add("visible");
+  iniciar();
 }
 </script>
 </body>
