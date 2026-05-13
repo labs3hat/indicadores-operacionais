@@ -870,35 +870,35 @@ function renderDashboard() {
           // TM % meta
           const tmPct = l.tm_meta > 0 ? (l.tm_acum / l.tm_meta) * 100 : 0;
           const tmColor = barColor(tmPct);
-          return \`
-          <div class="loja-row \${statusClass}">
+          return `
+          <div class="loja-row ${statusClass}">
             <div>
-              <div class="loja-name">\${l.nome}</div>
-              <div class="loja-name-sub">\${l.label}</div>
+              <div class="loja-name">${l.nome}</div>
+              <div class="loja-name-sub">${l.label}</div>
             </div>
             <div class="progress-wrap">
               <div class="progress-bar-bg">
-                <div class="progress-bar-fill" style="width:\${barW}%;background:\${color}"></div>
+                <div class="progress-bar-fill" style="width:${barW}%;background:${color}"></div>
               </div>
-              <div class="progress-pct" style="color:\${color}">\${fPct(pct)} da meta</div>
+              <div class="progress-pct" style="color:${color}">${fPct(pct)} da meta</div>
             </div>
             <div class="loja-metric">
-              <div class="loja-metric-val">\${fBRL(l.receita_acum)}</div>
+              <div class="loja-metric-val">${fBRL(l.receita_acum)}</div>
               <div class="loja-metric-label">realizado</div>
             </div>
             <div class="loja-metric">
-              <div class="loja-metric-val" style="color:\${projColor}">\${fBRL(projLoja)}</div>
-              <div class="loja-metric-label">projeção <span style="color:\${projColor};font-weight:700">\${fPct(projPctLoja)}</span></div>
+              <div class="loja-metric-val" style="color:${projColor}">${fBRL(projLoja)}</div>
+              <div class="loja-metric-label">projeção <span style="color:${projColor};font-weight:700">${fPct(projPctLoja)}</span></div>
             </div>
             <div class="loja-metric">
-              <div class="loja-metric-val" style="color:\${tmColor}">R$ \${(l.tm_acum||0).toFixed(2).replace('.',',')}</div>
-              <div class="loja-metric-label">TM · meta R$ \${(l.tm_meta||0).toFixed(2).replace('.',',')} <span style="color:\${tmColor};font-weight:700">\${tmPct>0?fPct(tmPct):''}</span></div>
+              <div class="loja-metric-val" style="color:${tmColor}">R$ ${(l.tm_acum||0).toFixed(2).replace('.',',')}</div>
+              <div class="loja-metric-label">TM · meta R$ ${(l.tm_meta||0).toFixed(2).replace('.',',')} <span style="color:${tmColor};font-weight:700">${tmPct>0?fPct(tmPct):''}</span></div>
             </div>
             <div class="loja-metric">
-              <div class="loja-metric-val">\${fNum(l.pa_acum)}</div>
+              <div class="loja-metric-val">${fNum(l.pa_acum)}</div>
               <div class="loja-metric-label">atendimentos</div>
             </div>
-          </div>\`;
+          </div>`;
         }).join("");
       })()}
     </div>
